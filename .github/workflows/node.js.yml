@@ -6,13 +6,14 @@ name: Node.js CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  pull_request_target:
+    types: [labeled]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
 
     strategy:
       matrix:
