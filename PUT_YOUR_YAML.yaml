@@ -1,9 +1,67 @@
 test1: 
-  #TODO: 여기에 1번 데이터를 YAML 형식으로 작성하세요. 
+  Car:
+    Color: Blue
+    Model:
+      Name: Cyber Truck
+      Year: 2022
+    Fuel: Electric
+    Price: "$100,000"
 
-test2: 
-  #TODO: 여기에 2번 데이터를 YAML 형식으로 작성하세요.  
+  #TODO: 여기에 1번 데이터를 YAML 형식으로 작성하세요.
 
-test3: 
+
+
+
+test2:
+  Version: "2012-10-17"
+  Statement:
+      - Action: ["ec2:*", "elasticloadbalancing:*", "route53:*", "autoscaling:*", "cloudwatch:*", "SNS:*"]
+        Effect: Allow
+        Resource: ["*"]
+
+      - Action: ["s3:*"]
+        Effect: Allow
+        Resource: ["arn:aws:s3:::travis-terraform-state", "arn:aws:s3:::travis-terraform-state/*", "arn:aws:s3:::travis-shared-1-registry-images", "arn:aws:s3:::travis-shared-1-registry-images/*", "arn:aws:s3:::travis-shared-2-registry-images", "arn:aws:s3:::travis-shared-2-registry-images/*"]
+    
+      - Action: ["iam:GetUser"]
+        Effect: Allow
+        Resource: ["arn:aws:iam::341288657826:user/igor-terraform"]
+
+      - Action: ["iam:*"]
+        Effect: Allow
+        Resource: ["arn:aws:iam::341288657826:role/*", "arn:aws:iam::341288657826:user/registry-shared-1", "arn:aws:iam::341288657826:user/registry-shared-2", "arn:aws:iam::*:user/cyclist-*", "arn:aws:iam::*:user/worker-*", "arn:aws:iam::*:user/build-trace-*"]
+    
+      - Action: ["dynamodb:*"]
+        Effect: Allow
+        Resource: ["arn:aws:dynamodb:us-east-1:341288657826:table/travis-terraform-state"]
+
+
+
+test3:
+  name: "Node.js CI"
+  on:
+    push:
+      branches: main
+    pull_request:
+      branches : main
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps: 
+        - uses: "actions/checkout@v2"
+        - name: "Use Node.js"
+          uses: "actions/setup-node@v1"
+          with:
+              always-auth: True
+              node-version: "12.x"
+              registry-url: "https://registry.npmjs.org"
+              scope: "@octocat"
+        - name: "Install dependencies"
+          run: npm ci
+          env: 
+            NODE_AUTH_TOKEN: "${{secrets.NPM_TOKEN}}"
+
+
   #TODO: 여기에 3번 데이터를 YAML 형식으로 작성하세요.
 
